@@ -1,0 +1,21 @@
+.App {
+  text-align: center;
+}
+.head-title {
+  font-weight:100 !important;
+  color:white;
+}
+.head-sub{
+  font-weight:100;
+  color:white;
+  margin: 20px 0 10px !important;
+}
+
+.navbar {
+  background-color: #FAFAFA !important;
+}
+  .navbar span {
+    color: rgba(0, 0, 0, 0.54);
+    font-size: 2rem;
+    font-weight:100;
+  }
