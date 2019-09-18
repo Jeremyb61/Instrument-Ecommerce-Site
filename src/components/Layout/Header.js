@@ -1,11 +1,10 @@
 import React from 'react';
 import { Grid } from '@material-ui/core';
-import { Parallax, Background } from 'react-parallax';
+import { Parallax} from 'react-parallax';
 import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles';
 import '../../App.css'
 
-const Header = () => {
+const Header = (props) => {
     return (
         <div >
             <Parallax
