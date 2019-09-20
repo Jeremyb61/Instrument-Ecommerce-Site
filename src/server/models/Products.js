@@ -1,13 +1,18 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
+
   const Products = sequelize.define('products', {
     name: DataTypes.STRING,
-    price: DataTypes.DECIMAL,
+    price: DataTypes.STRING,
     description: DataTypes.STRING,
     type: DataTypes.STRING
   }, {});
-  Products.associate = function(models) {
+
+  Products.associate = (models) => {
     Products.belongsTo(models.Departments);
+
+    Products.hasMany(models.productimages);
   };
+
   return Products;
 };

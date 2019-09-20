@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import NavBar from './components/Layout/NavBar.js';
+import Footer from './components/Layout/Footer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Department from './components/Department'
 import HomePage from './components/HomePage.js'
@@ -13,14 +14,16 @@ function App(props) {
     <div className="App">
       <CssBaseline />
       <NavBar />
-
-
+      
       <Router>
         <Switch>
           <Route exact path="/" component={HomePage}/>
-          <Route exact path="/:instName" component={Department}/>
+          <Route exact path="/:instId" component={Department}/>
         </Switch>  
       </Router>
+
+      <Footer />
+
       </div>
   );
 }

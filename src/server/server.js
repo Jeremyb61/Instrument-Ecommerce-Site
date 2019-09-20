@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 var session = require('express-session');
 const path = require('path');
+const cloudinary = require('cloudinary');
 
 // DB Config
 const sequelize = require('./modules/dbconnection');
@@ -42,7 +43,13 @@ if (app.get('env') === 'production') {
 }
 app.use(session(sessConfig));
 //END session config
+const CLOUD_CONFIG = require('./modules/cloudinary');
 
+cloudinary.config({
+    cloud_name: CLOUD_CONFIG.CLOUD_NAME,
+    api_key: CLOUD_CONFIG.API_KEY,
+    api_secret: CLOUD_CONFIG.API_SECRET
+});
 
 app.use(require('./routes'));
 
