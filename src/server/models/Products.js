@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
 
   Products.associate = (models) => {
-    Products.belongsTo(models.Departments);
+    Products.belongsTo(models.departments);
 
     Products.hasMany(models.productimages);
   };

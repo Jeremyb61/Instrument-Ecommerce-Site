@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": "jeriscool55!",
-    "database": "musicecomerce",
-    "host": "127.0.0.1",
+    "username": "ubj7j2u5rojm1giq",
+    "password": "ZhDi8t8tUQYJcdMwTsMZ",
+    "database": "boukoq5gootmncvxhuzi",
+    "host": "boukoq5gootmncvxhuzi-mysql.services.clever-cloud.com",
     "dialect": "mysql"
   },
   "test": {
