@@ -43,8 +43,8 @@ if (app.get('env') === 'production') {
 }
 app.use(session(sessConfig));
 //END session config
-const CLOUD_CONFIG = require('./modules/cloudinary');
 
+const CLOUD_CONFIG = require('./modules/cloudinary');
 cloudinary.config({
     cloud_name: CLOUD_CONFIG.CLOUD_NAME,
     api_key: CLOUD_CONFIG.API_KEY,

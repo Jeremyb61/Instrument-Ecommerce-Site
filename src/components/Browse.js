@@ -90,6 +90,9 @@ class Browse extends Component {
                     </Grid>
                 })}
                 </Grid>
+                <Link to="/new">
+                    Add Product
+                </Link>
             </div>
         )
 
