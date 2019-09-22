@@ -36,7 +36,6 @@ const sessConfig = {
         maxAge: 60000 * 60 * 24
     }
 }
-
 if (app.get('env') === 'production') {
     app.set('trust proxy', 1);
     sessConfig.cookie.secure = true;

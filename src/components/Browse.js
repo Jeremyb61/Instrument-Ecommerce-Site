@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -9,8 +10,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+//http cycle library
 import axios from 'axios'
-
+// Servers port
 const url = 'http://localhost:8000';
 
 const useStyles = () => ({
@@ -34,11 +36,12 @@ class Browse extends Component {
     state = {
         departments: [],
     };
-
-
+    
+    // Lifecycle method that fires when component initializes
     componentDidMount() {
         this.getDepartments();
     }
+    //uses axios to make a get request to render all departments
     async getDepartments() {
         await axios.get(`${url}/api/departments`)
             .then((response) => {
@@ -90,7 +93,12 @@ class Browse extends Component {
                     </Grid>
                 })}
                 </Grid>
-                <Link to="/new">
+                <Link to={{
+                    pathname: "/new/product",
+                    state: {
+                        departments: this.state.departments
+                    }
+                }}>
                     Add Product
                 </Link>
             </div>

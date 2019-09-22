@@ -16,7 +16,8 @@ const url = 'http://localhost:8000';
 
 const useStyles = () => ({
     card: {
-        maxWidth: '100%',
+        minWidth: '100%',
+        maxHeight: '100%',
         display: 'inline-block',
 
     },
@@ -94,7 +95,7 @@ class DepartmentItem extends Component {
                                     <CardMedia
                                         className={classes.media}
                                         image={item.productimages[0].path}
-                                        title="Taylor 250ce-BLK DLX 12-String Dreadnought Acoustic-Electric Guitar"
+                                        title={item.name}
                                     />
                                     <CardContent>
                                         <Typography variant="body2" color="textSecondary" component="p">
