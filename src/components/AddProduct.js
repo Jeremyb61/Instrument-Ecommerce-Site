@@ -28,7 +28,7 @@ export default class AddProduct extends Component {
     displayDepartments () {
         const { departments } = this.props.location.state
         const departmentList = departments.map((item) => {
-            return  <option key={item.id} value={item.name}>{item.name}</option>
+            return <option key={item.id} value={item.name}>{item.name}</option>
         });
         this.setState({
             departments: departmentList
@@ -40,11 +40,25 @@ export default class AddProduct extends Component {
             [event.target.name]: event.target.value,
         });
     }
+    resetForm() {
+        this.setState({
+            name: "",
+            type: "",
+            price: "",
+            description: "",
+            dept: "Guitars",
+            image1:"",
+            image2:"",
+            image3:"",
+            image4:"",
+            image5:"",
+        })
+    }
     // Handles From submissions
     async handleSubmit (e) {
         e.preventDefault();
 
-        let imageArray = [];
+        const imageArray = [];
         if(this.state.image1 !== "") {
             imageArray.push(this.state.image1);
         }
@@ -72,6 +86,7 @@ export default class AddProduct extends Component {
         .then((response) => {
             console.log('POST response: ', response);
         });
+        this.resetForm();
     }
     //Lifecycle method that fires on componenet initialization
     componentDidMount() {

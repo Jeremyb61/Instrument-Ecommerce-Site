@@ -17,7 +17,7 @@ const url = 'http://localhost:8000';
 const useStyles = () => ({
     card: {
         minWidth: '100%',
-        maxHeight: '100%',
+        height: '430px',
         display: 'inline-block',
 
     },
@@ -33,25 +33,22 @@ const useStyles = () => ({
 });
 
 class DepartmentItem extends Component {
-
     constructor(props) {
         super(props);
-        this.params = props.params.instId;
-
-    }
-
-    state = {
-        products: []
+        this.state = {
+            params: props.params,
+            products: []
+        }
     }
     async getProducts() {
-        await axios.get(`${url}/api/products/${this.params}`)
+        await axios.get(`${url}/api/products/${this.state.params}`)
             .then((response) => {
                 this.setState({ products: response.data });
             });
     }
     async componentDidMount() {
         await this.getProducts()
-        console.log(this.state.products);
+        
     }
     render() {
 
