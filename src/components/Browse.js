@@ -29,6 +29,12 @@ const useStyles = () => ({
     },
     cardTypography: {
         fontSize: '14px !important'
+    },
+    headline: {
+        marginTop: '30px',
+        marginBottom: '10px',
+        textAlign: 'left',
+        fontWeight: '300'
     }
 });
 
@@ -54,7 +60,7 @@ class Browse extends Component {
         const { classes } = this.props;
         return (
             <div>
-                <Typography styles={{ marginTop: '30px', marginBottom: '10px', textAlign: 'left' }} display="block" variant='h4'>
+                <Typography className={classes.headline} isplay="block" variant='h4'>
                     Browse Departments
                 </Typography>
 

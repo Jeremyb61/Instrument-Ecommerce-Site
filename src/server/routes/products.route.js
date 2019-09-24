@@ -50,4 +50,19 @@ router.post('/add', async (req,res,next) => {
     console.log(req.body);
 })
 
+router.get('/one/:itemId', async (req,res,next) => {
+    Product.findOne({
+        where: {
+            id: req.params.itemId
+        },
+        include:[{
+            model:ProductImage
+        }]
+    }).then((product) => {
+        res.json({
+            product
+        })
+    })
+})
+
 module.exports = router;

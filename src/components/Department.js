@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import { Container } from '@material-ui/core';
+import PropTypes from 'prop-types';
 
+import { withStyles } from '@material-ui/core/styles';
 import DepartmentItem from './DepartmentItem.js'
 
 import axios from 'axios';
 const url = 'http://localhost:8000';
 
-export default class Department extends Component {
+const useStyles = () => ({
+    header: {
+        marginBottom: "30px",
+        fontWeight:'300'
+    }
+});
+
+class Department extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,11 +37,16 @@ export default class Department extends Component {
         }
 
         render() {
+            const { classes } = this.props;
+
             return (
                 <div>
-                    <br /><br /><br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
                     
-                    <h1>{this.state.departmentName} Department</h1>
+                    <h1 className={classes.header}>{this.state.departmentName}</h1>
                     <Container maxWidth="lg">
                         <DepartmentItem params={this.state.params} />
                     </Container>
@@ -40,3 +54,7 @@ export default class Department extends Component {
             )
         }
     }
+    Department.propTypes = {
+        classes: PropTypes.object.isRequired,
+    };
+    export default withStyles(useStyles)(Department);

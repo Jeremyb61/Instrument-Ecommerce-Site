@@ -36,7 +36,7 @@ class DepartmentItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            params: props.params,
+            params: this.props.params,
             products: []
         }
     }
@@ -47,8 +47,7 @@ class DepartmentItem extends Component {
             });
     }
     async componentDidMount() {
-        await this.getProducts()
-        
+        await this.getProducts()   
     }
     render() {
 
@@ -86,7 +85,7 @@ class DepartmentItem extends Component {
                         lg={3}
                         xl={3}
                     >
-                        <Link to={`/${this.params}/${item.name}`}>
+                        <Link to={`/${this.state.params}/${item.id}`}>
                             <Card className={classes.card}>
                                 <CardActionArea>
                                     <CardMedia
@@ -112,7 +111,7 @@ class DepartmentItem extends Component {
 
         return (
             <div>
-                <br /><br />
+                
                 <Grid
                     container
                     spacing={0}
