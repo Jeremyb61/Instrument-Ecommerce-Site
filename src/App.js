@@ -10,25 +10,30 @@ import ItemDetails from './components/ItemDetails.js';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import 'typeface-roboto';
 
+import { Provider } from 'react-redux';
+import Store from './store.js';
+
 
 function App(props) {
   return (
-    <div className="App">
-      <CssBaseline />
-      <NavBar />
-      
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomePage}/>
-          <Route exact path="/:instId" component={Department}/>
-          <Route exact path="/new/product" component={AddProduct}/>
-          <Route exact path="/:deptId/:itemId" component={ItemDetails}/>
-        </Switch>  
-      </Router>
+    <Provider store={Store}>
+      <div className="App">
+        <CssBaseline />
+        <NavBar />
 
-      <Footer />
+        <Router>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route exact path="/:instId" component={Department} />
+            <Route exact path="/new/product" component={AddProduct} />
+            <Route exact path="/:deptId/:itemId" component={ItemDetails} />
+          </Switch>
+        </Router>
+
+        <Footer />
 
       </div>
+    </Provider>
   );
 }
 

@@ -19,3 +19,18 @@
     font-size: 2rem;
     font-weight:100;
   }
+  
+  .item-det-body {
+    margin-top: 95px;
+  }
+  
+  .image-scroll {
+    /* display: none; */
+    width:100% !important;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .item-det-body {
+      margin-top: 60px !important;
+    }
+  }

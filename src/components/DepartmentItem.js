@@ -10,9 +10,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid'
 
-import axios from 'axios'
-
-const url = 'http://localhost:8000';
+import { connect } from 'react-redux';
+import { fetchItems } from '../actions/itemActions'
 
 const useStyles = () => ({
     card: {
@@ -33,85 +32,76 @@ const useStyles = () => ({
 });
 
 class DepartmentItem extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            params: this.props.params,
-            products: []
-        }
-    }
-    async getProducts() {
-        await axios.get(`${url}/api/products/${this.state.params}`)
-            .then((response) => {
-                this.setState({ products: response.data });
-            });
-    }
+
     async componentDidMount() {
-        await this.getProducts()   
+        await this.props.fetchItems(this.props.params);
     }
     render() {
 
         const { classes } = this.props;
-        const { products } = this.state;
+        var itemList;
 
-        const itemList = products.map((item) => {
-            if (item.productimages[0]) {
+        if (!this.props.items[0]) {
+            itemList = <h1>Loading</h1>
+        } else {
+            itemList = this.props.items.map((item) => {
+                if (item.productimages[0]) {
 
-                if (item.name.length >= 66) {
-                    let nameArr = item.name.split('');
-                    let counter = 0;
-                    for (let i = 66; i < nameArr.length; i++) {
-                        counter++;
-                        if (i + 1 === nameArr.length && counter < 3) {
-                            nameArr[i + 1] = "."
+                    if (item.name.length >= 66) {
+                        let nameArr = item.name.split('');
+                        let counter = 0;
+                        for (let i = 66; i < nameArr.length; i++) {
+                            counter++;
+                            if (i + 1 === nameArr.length && counter < 3) {
+                                nameArr[i + 1] = "."
+                            }
+                            if (counter > 3) {
+                                nameArr[i] = "";
+                            }
+                            else {
+                                nameArr[i] = ".";
+                            }
                         }
-                        if (counter > 3) {
-                            nameArr[i] = "";
-                        }
-                        else {
-                            nameArr[i] = ".";
-                        }
+                        item.name = nameArr.join('');
                     }
-                    item.name = nameArr.join('');
+                    return (
+                        <Grid
+                            className={classes.gridItem}
+                            key={item.name}
+                            item
+                            xs={12}
+                            sm={6}
+                            md={4}
+                            lg={3}
+                            xl={3}
+                        >
+                            <Link to={`/${this.props.params}/${item.id}`}>
+                                <Card className={classes.card}>
+                                    <CardActionArea>
+                                        <CardMedia
+                                            className={classes.media}
+                                            image={item.productimages[0].path}
+                                            title={item.name}
+                                        />
+                                        <CardContent>
+                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                {item.name}
+                                            </Typography>
+                                            <Typography gutterBottom variant="h5" component="h2" style={{ color: '#cd2418' }}>
+                                                {item.price}
+                                            </Typography>
+                                        </CardContent>
+                                    </CardActionArea>
+                                </Card>
+                            </Link>
+                        </Grid>
+                    )
                 }
-                return (
-                    <Grid
-                        className={classes.gridItem}
-                        key={item.name}
-                        item
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        xl={3}
-                    >
-                        <Link to={`/${this.state.params}/${item.id}`}>
-                            <Card className={classes.card}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        className={classes.media}
-                                        image={item.productimages[0].path}
-                                        title={item.name}
-                                    />
-                                    <CardContent>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            {item.name}
-                                        </Typography>
-                                        <Typography gutterBottom variant="h5" component="h2" style={{ color: '#cd2418' }}>
-                                            {item.price}
-                                        </Typography>
-                                    </CardContent>
-                                </CardActionArea>
-                            </Card>
-                        </Link>
-                    </Grid>
-                )
-            }
-        })
-
+            })
+        }
         return (
             <div>
-                
+
                 <Grid
                     container
                     spacing={0}
@@ -126,7 +116,14 @@ class DepartmentItem extends Component {
         )
     }
 };
+
+const mapStateToProps = (state) => ({
+    items: state.items.items
+})
+
 DepartmentItem.propTypes = {
     classes: PropTypes.object.isRequired,
+    fetchItems: PropTypes.func.isRequired,
+    items: PropTypes.array.isRequired
 };
-export default withStyles(useStyles)(DepartmentItem);
+export default withStyles(useStyles)(connect(mapStateToProps, { fetchItems })(DepartmentItem));

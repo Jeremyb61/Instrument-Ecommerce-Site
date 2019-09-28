@@ -1,87 +1,148 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
+import ImageGallery from 'react-image-gallery';
+import '../App.css'
 // MUI Components
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import "react-image-gallery/styles/css/image-gallery.css";
+
+import AddToCart from './AddToCart';
 
 //http cycle library
 import axios from 'axios'
-// Servers port
+import { parse } from '@babel/core';
+// Servers address
 const url = 'http://localhost:8000';
 
-const useStyles = () => ({
-
+const useStyles = (theme) => ({
+    gridItem: {
+        padding: '0px !important',
+   },
+    
+    root: {
+        padding: theme.spacing(2, 2),
+    },
+    img: {
+        height:'350px'
+    }
 });
 
 class ItemDetails extends Component {
-    constructor(props) {
-        super(props);
+    state = {
+        item: {},
+        mainImage: "",
+        productImages: [],
+        price: 0
+    };
 
-        this.state = {
-            item: {}
-        };
-    }
 
     // Lifecycle method that fires when component initializes
     async componentDidMount() {
-        await this.getCurrentIem();
+        await this.getCurrentItem();
+        this.prepCarosel();
+
     }
     //uses axios to make a get request to render all departments
-    async getCurrentIem() {
+    async getCurrentItem() {
         await axios.get(`${url}/api/products/one/${this.props.match.params.itemId}`)
             .then((response) => {
-                // console.log(response)
-                this.setState({ item: response.data });
-                console.log(this.state.item);
+                let price = response.data.product.price;
+                let num = price.replace(',','');
+                const newPrice = parseFloat(num);
+                this.setState({
+                    item: response.data.product,
+                    mainImage: response.data.product.productimages[0].path,
+                    productImages: response.data.product.productimages,
+                    price: newPrice
+                });
             });
-
+    }
+    prepCarosel() {
+        const { productImages } = this.state;
+        const imageArray = [];
+        
+        productImages.forEach((obj) => {
+            let newObj = {
+                original: obj.path,
+                thumbnail: obj.path,
+                id: obj.id,
+                productId:obj.productId,
+                sizes: '100vh'
+            }
+            imageArray.push(newObj);
+        });
+        this.setState({
+            productImages:imageArray
+        })
     }
 
     render() {
         const { classes } = this.props;
-        if (this.state.item) {
-            return (
-                <div>
- 
+        const { item, productImages, price } = this.state;
+    
+        return (
+            <div style={{minHeight: '80vh'}}>
+                <div className="item-det-body">
+                <Grid
+                    container
+                    spacing={0}
+                    direction="row"
+                    justify="space-evenly"
+                    alignItems="flex-start"
+                >
                     <Grid
-                        container
-                        spacing={0}
-                        direction="row"
-                        justify="space-evenly"
-                        alignItems="flex-start"
+                        className={classes.gridItem}
+                        item
+                        xs={12}
+                        sm={10}
+                        md={6}
+                        lg={3}
+                        xl={3}
                     >
-                        <Grid
-                            // className={classes.gridItem}
-                            item
-                            xs={12}
-                            sm={12}
-                            md={6}
-                            lg={4}
-                            xl={3}
-                        >
-                            <Card className={classes.card} style={{ width: '100%' }}>
-                                <CardActionArea>
-                                    <CardMedia
-                                        style={{ height: '250px' }}
-                                        // image={this.state.item.productimages[0].path}
-                                    // title={item.name}
-                                    />
-                                    {/* <Typography className={classes.cardTypography} variant="overline">
-                                    {obj.name}
-                                </Typography> */}
-                                </CardActionArea>
-                            </Card>
-                        </Grid>
+                        <ImageGallery 
+                            additionalClass="image-scroll"
+                            useBrowserFullscreen={false}
+                            sizes={productImages.sizes}
+                            items={productImages}
+                            showPlayButton={false}
+                            />
                     </Grid>
+                    <Grid
+                        className={classes.gridItem}
+                        style={{marginTop:'10px'}}
+                        item
+                        xs={11}
+                        sm={10}
+                        md={6}
+                        lg={3}
+                        xl={3}
+                    >
+                        <Typography variant="h5" component="h3" style={{marginBottom:'25px'}}>
+                            {item.name}
+                        </Typography>
+                        <Typography component="p" align="justify">
+                            (Description) Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean sit amet varius enim. Nullam lacinia lacus in venenatis ullamcorper. Sed viverra dui nibh, non imperdiet justo iaculis lobortis. Vestibulum a finibus nunc. Morbi molestie eros sem, id tincidunt augue malesuada vitae. Aliquam egestas, risus id rhoncus tincidunt, velit ante dignissim arcu, id laoreet nisi turpis eget massa. Suspendisse porta luctus arcu, vitae fermentum massa vulputate at. Quisque in ipsum sollicitudin, ornare nibh eget, tempor nulla. Nulla enim metus, lacinia sed aliquet sed, dapibus id dui.
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        className={classes.gridItem}
+                        style={{marginTop:'10px'}}
+                        item
+                        xs={11}
+                        sm={10}
+                        md={6}
+                        lg={3}
+                        xl={3}
+                    >
+                        <AddToCart item={item} price={price}/>
+                    </Grid>
+                </Grid>
                 </div>
-            )
-        }
+            </div>
+        )
+
 
     }
 }

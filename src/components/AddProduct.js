@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-//http cycle library
-import axios from 'axios'
-// Servers port
-const url = 'http://localhost:8000';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { createItem } from '../actions/itemActions'
 
 
-export default class AddProduct extends Component {
+class AddProduct extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -57,7 +56,6 @@ export default class AddProduct extends Component {
     // Handles From submissions
     async handleSubmit (e) {
         e.preventDefault();
-
         const imageArray = [];
         if(this.state.image1 !== "") {
             imageArray.push(this.state.image1);
@@ -82,10 +80,7 @@ export default class AddProduct extends Component {
             description: this.state.description,
             dept: this.state.dept,
         }
-        await axios.post(`${url}/api/products/add`,body)
-        .then((response) => {
-            console.log('POST response: ', response);
-        });
+        await this.props.createItem(body);
         this.resetForm();
     }
     //Lifecycle method that fires on componenet initialization
@@ -202,3 +197,7 @@ export default class AddProduct extends Component {
         )
     }
 }
+AddProduct.propTypes = {
+    createItem: PropTypes.func.isRequired
+}
+export default connect(null, { createItem })(AddProduct);
